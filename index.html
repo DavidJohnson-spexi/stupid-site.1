@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>:)</title>
+
   <style>
     * {
       margin: 0;
@@ -14,25 +16,89 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: #000;
       overflow: hidden;
+      background: #000;
     }
 
-    body {
+    #screen {
+      position: fixed;
+      inset: 0;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      background: #000;
+      cursor: pointer;
     }
 
-    img {
-      display: block;
+    #konkon-gif {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      display: none;
+    }
+
+    #start {
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    #hint {
+      font-size: 13px;
+      color: #888;
+      margin-top: 12px;
     }
   </style>
 </head>
+
 <body>
-  <img src="./konkon-banging.gif" alt="">
+  <div id="screen">
+    <div id="start">
+      TAP TO CONTINUE
+      <div id="hint">Tap anywhere</div>
+    </div>
+
+    <img
+      id="konkon-gif"
+      src="konkon-banging.gif"
+      alt=""
+    >
+  </div>
+
+  <audio
+    id="konkon-audio"
+    src="Konkonse.ogg.ogx"
+    loop
+    preload="auto"
+  ></audio>
+
+  <script>
+    const screen = document.getElementById("screen");
+    const start = document.getElementById("start");
+    const gif = document.getElementById("konkon-gif");
+    const audio = document.getElementById("konkon-audio");
+
+    let started = false;
+
+    screen.addEventListener("click", async () => {
+      if (started) return;
+      started = true;
+
+      start.style.display = "none";
+      gif.style.display = "block";
+
+      audio.volume = 1.0;
+
+      try {
+        await audio.play();
+      } catch (error) {
+        started = false;
+        start.style.display = "block";
+        gif.style.display = "none";
+        alert("Не удалось запустить звук. Проверь аудиофайл и нажми ещё раз.");
+      }
+    });
+  </script>
 </body>
 </html>
